@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+    <script src="helpers/kinema.js"></script>
+    <script src="helpers/helper.js"></script>
     <script src="models/Tank.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
 
-<a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: true">
-    <a-plane position="0 -1 0" rotation="270 0 0" width="8" height="8" shader="flat" opacity="0.5" color="green"></a-plane>
+<a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: true" physics="debug: false; gravity: -1; iterations: 1">
+    <a-entity zid="cameraRig" position="0 0.5 0"> <!-- offset-->
+        <a-camera id="camera" kinema-body="radius: 1" wasd-controls="acceleration: 7; fly: false" look-controls>
+            <a-cursor raycaster="objects: [interact]" color="red"></a-cursor>
+        </a-camera>
+    </a-entity>
+
+    <a-plane static-body position="0 0 0" rotation="-270 0 0" width="12" height="12" shader="flat" opacity="0.5" color="green"></a-plane>
     <a-sky color="lightblue"></a-sky>
 
+    <a-plane position="0 -0.35 0" rotation="-90 0 0" width="12" height="12" shader="flat" src="images/grid.jpg" repeat="5 5" opacity="0.5" color="green"></a-plane>
+    <a-plane static-body position="0 0 -6" rotation="0 0 0" width="12" height="12" src="images/grid.jpg" repeat="5 5" opacity="0.5" color="green" shader="flat"></a-plane>
 
 </a-scene>
 

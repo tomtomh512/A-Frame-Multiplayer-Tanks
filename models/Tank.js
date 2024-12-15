@@ -1,6 +1,3 @@
-
-let yOffset = 0.5;
-
 class Tank {
     constructor(addedPlayer, playerId) {
         let x = addedPlayer.position.x;
@@ -12,7 +9,7 @@ class Tank {
         let color = "red";
 
         this.characterEntity = document.createElement("a-entity");
-        this.characterEntity.setAttribute("position", {x: x, y: y + yOffset, z: z});
+        this.characterEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
 
         this.headEntity = document.createElement("a-entity");
         this.headEntity.setAttribute("id", "headEntity");
@@ -41,7 +38,7 @@ class Tank {
         this.redRing.setAttribute("color", color);
         this.redRing.setAttribute("height", 0.05);
         this.redRing.setAttribute("radius", 0.175);
-        this.redRing.setAttribute("position", {x: 0, y: 0, z: -2.366});
+        this.redRing.setAttribute("position", {x: 0, y: 0, z: -2.4});
         this.redRing.setAttribute("rotation", {x: 90, y: 0, z: 0});
         this.redRing.setAttribute("shader", "flat");
         this.headEntity.append(this.redRing);
@@ -70,6 +67,16 @@ class Tank {
         this.mainBody.setAttribute("position", {x: 0, y: 0.5, z: 0.25});
         this.mainBody.setAttribute("shader", "flat");
         this.bodyEntity.append(this.mainBody);
+
+        this.collisionBox = document.createElement("a-box");
+        this.collisionBox.setAttribute("opacity", 0);
+        this.collisionBox.setAttribute("height", 2);
+        this.collisionBox.setAttribute("width", 2.75);
+        this.collisionBox.setAttribute("depth", 3.5);
+        this.collisionBox.setAttribute("position", {x: 0, y: 0.5, z: 0.25});
+        this.collisionBox.setAttribute("static-body", "");
+        this.collisionBox.setAttribute("obb-collider", "");
+        this.bodyEntity.append(this.collisionBox);
 
         this.front = document.createElement("a-box");
         this.front.setAttribute("color", "#545e4b");
@@ -197,10 +204,60 @@ class Tank {
         this.bodyEntity.append(this.createArm(-1.15, -1.3));
         this.bodyEntity.append(this.createArm(1.25, 1.6));
         this.bodyEntity.append(this.createArm(-1.25, 1.6));
+
+        this.infoTagEntity = document.createElement("a-entity");
+        this.infoTagEntity.setAttribute("id", "infoTagEntity");
+        this.infoTagEntity.setAttribute("position", {x: 0, y: 0.4, z: 0});
+
+        this.background = document.createElement("a-plane");
+        this.background.setAttribute("id", "background");
+        this.background.setAttribute("height", 0.275);
+        this.background.setAttribute("width", 0.6);
+        this.background.setAttribute("opacity", 0.5);
+        this.background.setAttribute("color", "black");
+        this.background.setAttribute("shader", "flat");
+        this.background.setAttribute("position", {x: 0, y: 0, z: 0});
+        this.infoTagEntity.append(this.background);
+
+        this.name = document.createElement("a-text");
+        this.name.setAttribute("id", "name");
+        this.name.setAttribute("value", addedPlayer.name);
+        this.name.setAttribute("color", "white");
+        this.name.setAttribute("scale", {x: 0.5, y: 0.5, z: 0.5});
+        this.name.setAttribute("position", {x: -0.275, y: 0.175, z: 0});
+        this.infoTagEntity.append(this.name);
+
+        this.health = document.createElement("a-text");
+        this.health.setAttribute("id", "health");
+        this.health.setAttribute("value", addedPlayer.health + "♡");
+        this.health.setAttribute("color", "white");
+        this.health.setAttribute("position", {x: -0.3, y: 0, z: 0});
+        this.infoTagEntity.append(this.health);
+
+        this.characterEntity.append(this.infoTagEntity);
+    }
+
+    updateTagAngle(angle) {
+        this.characterEntity.querySelector('#infoTagEntity').setAttribute("rotation", {x: 0, y: angle, z: 0})
+    }
+
+    updateTagName(name) {
+        this.characterEntity.querySelector('#infoTagEntity').querySelector('#name').setAttribute("value", name);
+        if (name === "") {
+            this.characterEntity.querySelector('#infoTagEntity').querySelector('#background').setAttribute("height", 0.275);
+            this.characterEntity.querySelector('#infoTagEntity').querySelector('#background').setAttribute("position", {x: 0, y: 0, z: 0});
+        } else {
+            this.characterEntity.querySelector('#infoTagEntity').querySelector('#background').setAttribute("height", 0.4);
+            this.characterEntity.querySelector('#infoTagEntity').querySelector('#background').setAttribute("position", {x: 0, y: 0.06, z: 0});
+        }
+    }
+
+    updateTagHealth(health) {
+        this.characterEntity.querySelector('#infoTagEntity').querySelector('#health').setAttribute("value", health + "%");
     }
 
     updatePosition(x,y,z) {
-        this.characterEntity.setAttribute("position", {x: x, y: y + yOffset, z: z});
+        this.characterEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
     }
 
     updateHeadRotation(x,y,z) {

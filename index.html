@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@192293bfd36d49d3cc82e611fd9b415b53b60435/dist/aframe-master.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet" type="text/css" />
+    <script src="helpers/KeyHoldListener.js"></script>
     <script src="helpers/kinema.js"></script>
     <script src="helpers/helper.js"></script>
+    <script src="models/Missile.js"></script>
     <script src="models/Tank.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
 
-<a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: true" physics="debug: false; gravity: -1; iterations: 1">
+<a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: false" physics="debug: false; gravity: -8; iterations: 1">
     <a-entity zid="cameraRig" position="0 0.5 0"> <!-- offset-->
         <a-camera id="camera" kinema-body="radius: 1" wasd-controls="acceleration: 7; fly: false" look-controls>
-            <a-cursor raycaster="objects: [interact]" color="red"></a-cursor>
+            <a-cursor raycaster="objects: [interact]" color="red" shader="flat"></a-cursor>
+<!--            <a-plane width="1.5" depth="1" rotation="0 0 0" src="images/hud.png" material="alphaTest: 0.5" shader="flat" position="0 0 -0.75"></a-plane>-->
         </a-camera>
     </a-entity>
 
@@ -22,9 +29,32 @@
     <a-sky color="lightblue"></a-sky>
 
     <a-plane position="0 -0.35 0" rotation="-90 0 0" width="12" height="12" shader="flat" src="images/grid.jpg" repeat="5 5" opacity="0.5" color="green"></a-plane>
-    <a-plane static-body position="0 0 -6" rotation="0 0 0" width="12" height="12" src="images/grid.jpg" repeat="5 5" opacity="0.5" color="green" shader="flat"></a-plane>
+
+    <a-plane id="wall" obb-collider static-body position="0 0 -6" rotation="0 0 0" width="12" height="12" src="images/grid.jpg" repeat="5 5" opacity="0.5" color="green" shader="flat"></a-plane>
 
 </a-scene>
+
+<div id="enter-name">
+    <input id="player-name" maxlength="20" type="text" value = "" placeholder="Enter Name"/>
+</div>
+
+<section id="hud-container">
+    <!-- trailing damage effect, healthbar must render above healthbar-red -->
+    <section id="healthbar-container">
+        <div id="healthbar-base"></div>
+        <div id="healthbar-trailing"></div>
+        <div id="healthbar"></div>
+    </section>
+
+    <div id="information">
+        <div id="health-value"> Health: 100</div>
+        <div id="ammo-value"> Ammo: 10 </div>
+        <section id="ammo-bar-container">
+            <div id="ammo-bar-base"></div>
+            <div id="ammo-bar-count"></div>
+        </section>
+    </div>
+</section>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>

@@ -21,19 +21,6 @@ function atanInDegrees(y, x) {
     return angleInDegrees;
 }
 
-function getSpawnXPoint() {
-    let ranges = [
-        { min: -3.3, max: -3.15 },
-        { min: -0.45, max: 0.45 },
-        { min: 3.15, max: 3.3 }
-    ];
-
-    let randomRangeIndex = Math.floor(Math.random() * ranges.length);
-    let range = ranges[randomRangeIndex];
-    let retVal = Math.random() * (range.max - range.min) + range.min
-    return retVal;
-}
-
 function getCameraAngle(x, z) {
     let longitude = 0 - x;
     let latitude = 0 - z;

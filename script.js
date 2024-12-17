@@ -27,7 +27,6 @@ window.onload = function() {
     let count = 0;
     function createBullet() {
         if (players[playerId].ammo > 0) {
-
             let rigX = rig.getAttribute("position").x;
             let rigY = rig.getAttribute("position").y;
             let rigZ = rig.getAttribute("position").z;
@@ -35,15 +34,18 @@ window.onload = function() {
             let rigRy = rig.getAttribute("rotation").y;
             let rigRz = rig.getAttribute("rotation").z;
 
-            let yComponent = rigY + 1.27155 * sinInDegrees(rigRx);
-            let groundLength = rigY + 1.27155 * cosInDegrees(rigRx);
-            let xComponent = rigX - groundLength * sinInDegrees(rigRy);
-            let zComponent = rigZ - groundLength * cosInDegrees(rigRy);
+            let offset = 1.27155;
+            // let offset = 2;
+
+            let yComponent = offset * sinInDegrees(rigRx);
+            let groundLength = offset * cosInDegrees(rigRx);
+            let xComponent =  groundLength * sinInDegrees(rigRy);
+            let zComponent = groundLength * cosInDegrees(rigRy);
 
             let position = {
-                x: xComponent,
-                y: yComponent,
-                z: zComponent,
+                x: rigX - xComponent,
+                y: rigY + yComponent,
+                z: rigZ - zComponent,
             }
             let rotation = {
                 x: rigRx,
@@ -71,32 +73,63 @@ window.onload = function() {
 
     function moveBullet(currentProjectile, projectileRef, magnitude) {
         if (currentProjectile) {
-            // velocity
             let pitch = currentProjectile.rotation.x;
             let yaw = currentProjectile.rotation.y;
 
             let dx = cosInDegrees(pitch) * sinInDegrees(yaw);
             let dy = sinInDegrees(pitch);
             let dz = cosInDegrees(pitch) * cosInDegrees(yaw);
+
             dx /= magnitude;
             dy /= magnitude;
             dz /= magnitude;
 
-            // let magnitude = 15; //smoothness, more is slower, laggier, also affects speed so balance
             currentProjectile.position.x -= dx;
             currentProjectile.position.y += dy;
             currentProjectile.position.z -= dz;
             projectileRef.set(currentProjectile);
+        }
+    }
 
-            if (Math.abs(currentProjectile.position.x) > 7 ||
-                Math.abs(currentProjectile.position.y) > 7 ||
-                Math.abs(currentProjectile.position.z) > 7) {
+    function collideBullet(currentProjectile, projectileRef){
+        if (currentProjectile) {
+
+            if (Math.abs(currentProjectile.position.x) > 10 ||
+                Math.abs(currentProjectile.position.y) > 10 ||
+                Math.abs(currentProjectile.position.z) > 10) {
                 projectileRef.remove();
             }
 
-            // projectileElements[currentProjectile.id].projectileModel.addEventListener("obbcollisionstarted", () => {
-            //     projectileRef.remove();
-            // })
+            for (let playerKey in players) {
+                let currentPlayer = players[playerKey];
+                if (currentPlayer){
+                    let currentPlayerRef = firebase.database().ref(`players/${currentPlayer.id}`);
+
+                    if (calculateDistance(currentProjectile.position, currentPlayer.position, 0, -0.25) < 0.75) {
+                        projectileRef.remove();
+                        currentPlayerRef.update({
+                            health: currentPlayer.health - 5,
+                        })
+                    }
+                    // let playerX = currentPlayer.position.x;
+                    // let playerY = currentPlayer.position.y;
+                    // let playerZ = currentPlayer.position.z;
+                    //
+                    // if (projectileX > (playerX - 0.275) && projectileX < (playerX + 0.275) &&
+                    //     projectileY > (playerY + 0.275 - 0.8) && projectileY < (playerY + 0.275) &&
+                    //     projectileZ > (playerZ - 0.275) && projectileZ < (playerZ + 0.275) &&
+                    //     currentProjectile.from !== currentPlayerId
+                    // ) {
+                    //     projectileRef.remove();
+                    //     playerElements[currentPlayerId].playHurtSound();
+                    //
+                    //     currentPlayerRef.update({
+                    //         health: currentPlayer.health - 5,
+                    //     })
+                    // }
+
+                }
+            }
         }
     }
 
@@ -155,10 +188,13 @@ window.onload = function() {
             players[playerId].rotation.x = rig.getAttribute("rotation").x;
             players[playerId].rotation.y = rig.getAttribute("rotation").y;
             players[playerId].rotation.z = rig.getAttribute("rotation").z;
-
             playerRef.set(currentPlayer);
 
             updateInfoTag();
+
+            if (currentPlayer.health <= 0){
+                playerRef.remove();
+            }
         }
 
         for (let key in projectiles) {
@@ -166,7 +202,20 @@ window.onload = function() {
             if (currentProjectile) {
                 let projectileRef = firebase.database().ref(`projectiles/${key}`);
 
-                moveBullet(currentProjectile, projectileRef, 7.5);
+                moveBullet(currentProjectile, projectileRef, 5);
+                collideBullet(currentProjectile, projectileRef);
+
+                // if (Math.abs(currentProjectile.position.x) < 2.5 &&
+                //     Math.abs(currentProjectile.position.z) < 2.5) {
+                //     projectileRef.remove();
+                // }
+
+                // if (currentProjectile && projectileElements[currentProjectile.id]) {
+                //     projectileElements[currentProjectile.id].projectileModel.addEventListener("obbcollisionstarted", () => {
+                //         console.log("Hit");
+                //         projectileRef.remove();
+                //     })
+                // }
             }
         }
 
@@ -231,11 +280,17 @@ window.onload = function() {
         allPlayersRef.on("child_removed", (snapshot) => {
             const id = snapshot.val().id;
 
-            if (playerElements[id] && playerElements[id].characterEntity) {
-                scene.removeChild(playerElements[id].characterEntity);
+            // only remove elements if removed player is not user
+            // *** user's elements does not exist ***
+            if (id != playerId) {
+                if (playerElements[id]) {
+                    scene.removeChild(playerElements[id].characterEntity);
+                }
+                delete playerElements[id];
+            } else {
+                delete playerElements[id];
+                window.location.href = "google.com";
             }
-
-            delete playerElements[id];
         });
 
         allProjectilesRef.on("value", (snapshot) => {

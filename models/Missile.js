@@ -1,10 +1,8 @@
-let yOffset = 0.5;
-
 class Missile {
     constructor(addedProjectile) {
 
         let x = addedProjectile.position.x;
-        let y = addedProjectile.position.y + yOffset;
+        let y = addedProjectile.position.y;
         let z = addedProjectile.position.z;
 
         let rx = addedProjectile.rotation.x;
@@ -16,10 +14,11 @@ class Missile {
         this.projectileModel.setAttribute("radius", 0.05);
         this.projectileModel.setAttribute("shader","flat");
         this.projectileModel.setAttribute("obb-collider", "");
+        this.projectileModel.setAttribute("position", {x: x, y: y + 0.5, z: z});
         this.projectileModel.append(this.stuff);
     }
 
     updatePosition(x,y,z) {
-        this.projectileModel.setAttribute("position", {x: x, y: y + yOffset, z: z});
+        this.projectileModel.setAttribute("position", {x: x, y: y + 0.5, z: z});
     }
 }

@@ -1,12 +1,11 @@
 class Tank {
-    constructor(addedPlayer, playerId) {
+    constructor(addedPlayer, color) {
         let x = addedPlayer.position.x;
         let y = addedPlayer.position.y;
         let z = addedPlayer.position.z;
         let rx = addedPlayer.rotation.x;
         let ry = addedPlayer.rotation.y;
         let rz = addedPlayer.rotation.z;
-        let color = "red";
 
         this.characterEntity = document.createElement("a-entity");
         this.characterEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});

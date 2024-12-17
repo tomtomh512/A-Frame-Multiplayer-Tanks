@@ -1,5 +1,5 @@
 let milliseconds = 30;
-let maxAmmo = 10;
+let maxAmmo = 100;
 
 window.onload = function() {
     let playerId;
@@ -72,15 +72,20 @@ window.onload = function() {
     function moveBullet(currentProjectile, projectileRef, magnitude) {
         if (currentProjectile) {
             // velocity
-            let dx = sinInDegrees(currentProjectile.rotation.y);
-            let dy = sinInDegrees(currentProjectile.rotation.x);
-            let dz = cosInDegrees(currentProjectile.rotation.y);
+            let pitch = currentProjectile.rotation.x;
+            let yaw = currentProjectile.rotation.y;
 
-            // move, direct set
+            let dx = cosInDegrees(pitch) * sinInDegrees(yaw);
+            let dy = sinInDegrees(pitch);
+            let dz = cosInDegrees(pitch) * cosInDegrees(yaw);
+            dx /= magnitude;
+            dy /= magnitude;
+            dz /= magnitude;
+
             // let magnitude = 15; //smoothness, more is slower, laggier, also affects speed so balance
-            currentProjectile.position.x -= dx / magnitude;
-            currentProjectile.position.y += dy / magnitude;
-            currentProjectile.position.z -= dz / magnitude;
+            currentProjectile.position.x -= dx;
+            currentProjectile.position.y += dy;
+            currentProjectile.position.z -= dz;
             projectileRef.set(currentProjectile);
 
             if (Math.abs(currentProjectile.position.x) > 7 ||
@@ -213,7 +218,7 @@ window.onload = function() {
 
         allPlayersRef.on("child_added", (snapshot) => {
             const addedPlayer = snapshot.val();
-            let model= new Tank(addedPlayer, addedPlayer.id);
+            let model= new Tank(addedPlayer, "red");
             playerElements[addedPlayer.id] = model;
             
             // Only render other users' models

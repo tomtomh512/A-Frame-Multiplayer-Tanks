@@ -200,10 +200,10 @@ class Tank {
             return arm;
         };
 
-        this.bodyEntity.append(this.createArm(1.15, -1.3));
-        this.bodyEntity.append(this.createArm(-1.15, -1.3));
-        this.bodyEntity.append(this.createArm(1.25, 1.6));
-        this.bodyEntity.append(this.createArm(-1.25, 1.6));
+        this.bodyEntity.append(this.createArm(1, -1));
+        this.bodyEntity.append(this.createArm(-1, -1));
+        this.bodyEntity.append(this.createArm(1.25, 1.5));
+        this.bodyEntity.append(this.createArm(-1.25, 1.5));
 
         this.infoTagEntity = document.createElement("a-entity");
         this.infoTagEntity.setAttribute("id", "infoTagEntity");

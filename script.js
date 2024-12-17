@@ -35,10 +35,15 @@ window.onload = function() {
             let rigRy = rig.getAttribute("rotation").y;
             let rigRz = rig.getAttribute("rotation").z;
 
+            let yComponent = rigY + 1.27155 * sinInDegrees(rigRx);
+            let groundLength = rigY + 1.27155 * cosInDegrees(rigRx);
+            let xComponent = rigX - groundLength * sinInDegrees(rigRy);
+            let zComponent = rigZ - groundLength * cosInDegrees(rigRy);
+
             let position = {
-                x: rigX - 1.27155 * sinInDegrees(rigRy),
-                y: rigY + 1.27155 * sinInDegrees(rigRx),
-                z: rigZ - 1.27155 * cosInDegrees(rigRy),
+                x: xComponent,
+                y: yComponent,
+                z: zComponent,
             }
             let rotation = {
                 x: rigRx,

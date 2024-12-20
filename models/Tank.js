@@ -12,6 +12,12 @@ class Tank {
         this.characterEntity = document.createElement("a-entity");
         this.characterEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
 
+        // this.mainHB = document.createElement("a-sphere");
+        // this.mainHB.setAttribute("radius", 0.5);
+        // this.mainHB.setAttribute("opacity", 0.5);
+        // this.mainHB.setAttribute("position", {x: 0, y: -0.25, z: 0});
+        // this.characterEntity.append(this.mainHB);
+
         this.headEntity = document.createElement("a-entity");
         this.headEntity.setAttribute("id", "headEntity");
         this.headEntity.setAttribute("rotation", {x: rx, y: ry, z: rz});
@@ -69,41 +75,64 @@ class Tank {
         this.mainBody.setAttribute("shader", "flat");
         this.bodyEntity.append(this.mainBody);
 
-        this.frontHitBox = document.createElement("a-plane");
-        this.frontHitBox.setAttribute("static-body", "");
-        this.frontHitBox.setAttribute("opacity", 0);
-        this.frontHitBox.setAttribute("width", 2.75);
-        this.frontHitBox.setAttribute("height", 2);
-        this.frontHitBox.setAttribute("position", {x: 0, y: 0.55, z: 2});
-        this.frontHitBox.setAttribute("rotation", {x: 0, y: 180, z: 0});
-        this.bodyEntity.append(this.frontHitBox);
+        // this.collisionBox = document.createElement("a-box");
+        // this.collisionBox.setAttribute("opacity", 0);
+        // this.collisionBox.setAttribute("height", 2);
+        // this.collisionBox.setAttribute("width", 2.75);
+        // this.collisionBox.setAttribute("depth", 3.5);
+        // this.collisionBox.setAttribute("position", {x: 0, y: 0.5, z: 0.25});
+        // this.collisionBox.setAttribute("static-body", "");
+        // this.collisionBox.setAttribute("obb-collider", "");
+        // this.bodyEntity.append(this.collisionBox);
 
-        this.leftHitBox = document.createElement("a-plane");
-        this.leftHitBox.setAttribute("static-body", "");
-        this.leftHitBox.setAttribute("opacity", 0);
-        this.leftHitBox.setAttribute("width", 3.5);
-        this.leftHitBox.setAttribute("height", 2);
-        this.leftHitBox.setAttribute("position", {x: 1.375, y: 0.55, z: 0.25});
-        this.leftHitBox.setAttribute("rotation", {x: 0, y: 270, z: 0});
-        this.bodyEntity.append(this.leftHitBox);
+        let collisionHeight = 3;    // 2
+        let collisionWidth = 1.75;  // 2.75
+        let collisionDepth = 2.25;  // 3.5
 
-        this.rightHitBox = document.createElement("a-plane");
-        this.rightHitBox.setAttribute("static-body", "");
-        this.rightHitBox.setAttribute("opacity", 0);
-        this.rightHitBox.setAttribute("width", 3.5);
-        this.rightHitBox.setAttribute("height", 2);
-        this.rightHitBox.setAttribute("position", {x: -1.375, y: 0.55, z: 0.25});
-        this.rightHitBox.setAttribute("rotation", {x: 0, y: 90, z: 0});
-        this.bodyEntity.append(this.rightHitBox);
+        this.backCollision = document.createElement("a-plane");
+        this.backCollision.setAttribute("static-body", "");
+        this.backCollision.setAttribute("opacity", 0);
+        this.backCollision.setAttribute("width", collisionWidth);
+        this.backCollision.setAttribute("height", collisionHeight);
+        this.backCollision.setAttribute("position", {x: 0, y: 0.55, z: 0.25 + collisionDepth / 2 + 1});
+        this.backCollision.setAttribute("rotation", {x: 0, y: 180, z: 0});
+        this.bodyEntity.append(this.backCollision);
 
-        this.backHitBox = document.createElement("a-plane");
-        this.backHitBox.setAttribute("static-body", "");
-        this.backHitBox.setAttribute("opacity", 0);
-        this.backHitBox.setAttribute("width", 2.75);
-        this.backHitBox.setAttribute("height", 2);
-        this.backHitBox.setAttribute("position", {x: 0, y: 0.55, z: -1.5});
-        this.backHitBox.setAttribute("rotation", {x: 0, y: 0, z: 0});
-        this.bodyEntity.append(this.backHitBox);
+        this.leftCollision = document.createElement("a-plane");
+        this.leftCollision.setAttribute("static-body", "");
+        this.leftCollision.setAttribute("opacity", 0);
+        this.leftCollision.setAttribute("width", collisionDepth);
+        this.leftCollision.setAttribute("height", collisionHeight);
+        this.leftCollision.setAttribute("position", {x: collisionWidth / 2 + 1, y: 0.55, z: 0.25});
+        this.leftCollision.setAttribute("rotation", {x: 0, y: 270, z: 0});
+        this.bodyEntity.append(this.leftCollision);
+
+        this.rightCollision = document.createElement("a-plane");
+        this.rightCollision.setAttribute("static-body", "");
+        this.rightCollision.setAttribute("opacity", 0);
+        this.rightCollision.setAttribute("width", collisionDepth);
+        this.rightCollision.setAttribute("height", collisionHeight);
+        this.rightCollision.setAttribute("position", {x: -1 * collisionWidth / 2 - 1, y: 0.55, z: 0.25});
+        this.rightCollision.setAttribute("rotation", {x: 0, y: 90, z: 0});
+        this.bodyEntity.append(this.rightCollision);
+
+        this.frontCollision = document.createElement("a-plane");
+        this.frontCollision.setAttribute("static-body", "");
+        this.frontCollision.setAttribute("opacity", 0);
+        this.frontCollision.setAttribute("width", collisionWidth);
+        this.frontCollision.setAttribute("height", collisionHeight);
+        this.frontCollision.setAttribute("position", {x: 0, y: 0.55, z: 0.25 - collisionDepth / 2 - 1});
+        this.frontCollision.setAttribute("rotation", {x: 0, y: 0, z: 0});
+        this.bodyEntity.append(this.frontCollision);
+
+        // this.topCollision = document.createElement("a-plane");
+        // this.topCollision.setAttribute("static-body", "");
+        // this.topCollision.setAttribute("opacity", 0);
+        // this.topCollision.setAttribute("width", collisionWidth);
+        // this.topCollision.setAttribute("height", collisionDepth);
+        // this.topCollision.setAttribute("position", {x: 0, y: collisionHeight + 0.25, z: 0.25});
+        // this.topCollision.setAttribute("rotation", {x: 90, y: 0, z: 0});
+        // this.bodyEntity.append(this.topCollision);
 
         this.front = document.createElement("a-box");
         this.front.setAttribute("color", "#545e4b");

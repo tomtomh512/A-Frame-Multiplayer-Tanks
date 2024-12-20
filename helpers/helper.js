@@ -1,7 +1,7 @@
-function calculateDistance(object1, object2, obj1yOffset, obj2yOffset) {
-    const dx = object2.x - object1.x;
-    const dy = (object2.y + obj2yOffset) - (object1.y + obj1yOffset);
-    const dz = object2.z - object1.z;
+function calculateDistance(x1, y1, z1, x2, y2, z2) {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const dz = z2 - z1;
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
 }
 function sinInDegrees(angleInDegrees) {

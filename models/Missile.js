@@ -1,10 +1,8 @@
 class Missile {
     constructor(addedProjectile) {
-
         let x = addedProjectile.position.x;
         let y = addedProjectile.position.y;
         let z = addedProjectile.position.z;
-
         let rx = addedProjectile.rotation.x;
         let ry = addedProjectile.rotation.y;
         let rz = addedProjectile.rotation.z;
@@ -15,7 +13,6 @@ class Missile {
         this.projectileModel.setAttribute("shader","flat");
         this.projectileModel.setAttribute("obb-collider", "");
         this.projectileModel.setAttribute("position", {x: x, y: y + 0.5, z: z});
-        this.projectileModel.append(this.stuff);
     }
 
     updatePosition(x,y,z) {

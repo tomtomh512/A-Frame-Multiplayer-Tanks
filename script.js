@@ -4,6 +4,7 @@ let maxAmmo = 100;
 window.onload = function() {
     let playerId;
     let playerRef;
+    // Buckets to keep track of elements
     let players = {};
     let playerElements = {};
     let projectiles = {};
@@ -26,6 +27,7 @@ window.onload = function() {
 
     let count = 0;
     function createBullet() {
+        // Only generate projectile if ammo is greater than 0
         if (players[playerId].ammo > 0) {
             let rigX = rig.getAttribute("position").x;
             let rigY = rig.getAttribute("position").y;
@@ -53,9 +55,12 @@ window.onload = function() {
                 z: rigRz,
             }
 
+            // Generate id = playerId + count
             let uniqueId = playerId + count.toString();
             const projectileRef = firebase.database().ref(`projectiles/${uniqueId}`);
+            count++;
 
+            // Create projectile
             projectileRef.set({
                 id: uniqueId,
                 from: playerId,
@@ -63,7 +68,7 @@ window.onload = function() {
                 rotation,
             })
 
-            count++;
+            // Update ammo count
             playerRef.update({
                 ammo: players[playerId].ammo - 1,
             })
@@ -94,40 +99,32 @@ window.onload = function() {
     function collideBullet(currentProjectile, projectileRef){
         if (currentProjectile) {
 
+            // Hard boundaries
             if (Math.abs(currentProjectile.position.x) > 10 ||
                 Math.abs(currentProjectile.position.y) > 10 ||
                 Math.abs(currentProjectile.position.z) > 10) {
                 projectileRef.remove();
             }
 
+            // Collision with players
             for (let playerKey in players) {
                 let currentPlayer = players[playerKey];
                 if (currentPlayer){
                     let currentPlayerRef = firebase.database().ref(`players/${currentPlayer.id}`);
 
-                    if (calculateDistance(currentProjectile.position, currentPlayer.position, 0, -0.25) < 0.75) {
+                    if (calculateDistance(
+                        currentProjectile.position.x,
+                        currentProjectile.position.y,
+                        currentProjectile.position.z,
+                        currentPlayer.position.x,
+                        currentPlayer.position.y - 0.25,
+                        currentPlayer.position.z,
+                    ) < 0.75) {
                         projectileRef.remove();
                         currentPlayerRef.update({
                             health: currentPlayer.health - 5,
                         })
                     }
-                    // let playerX = currentPlayer.position.x;
-                    // let playerY = currentPlayer.position.y;
-                    // let playerZ = currentPlayer.position.z;
-                    //
-                    // if (projectileX > (playerX - 0.275) && projectileX < (playerX + 0.275) &&
-                    //     projectileY > (playerY + 0.275 - 0.8) && projectileY < (playerY + 0.275) &&
-                    //     projectileZ > (playerZ - 0.275) && projectileZ < (playerZ + 0.275) &&
-                    //     currentProjectile.from !== currentPlayerId
-                    // ) {
-                    //     projectileRef.remove();
-                    //     playerElements[currentPlayerId].playHurtSound();
-                    //
-                    //     currentPlayerRef.update({
-                    //         health: currentPlayer.health - 5,
-                    //     })
-                    // }
-
                 }
             }
         }
@@ -135,6 +132,7 @@ window.onload = function() {
 
     function refill() {
         if (players[playerId]) {
+            // If ammo is less than max, refill
             if (players[playerId].ammo < maxAmmo){
                 players[playerId].ammo = players[playerId].ammo + 1;
             }
@@ -144,6 +142,7 @@ window.onload = function() {
     function updateInfoTag() {
         for (let key in players) {
             let currentPlayer = players[key];
+            // Update other players' tags
             if (currentPlayer && currentPlayer.position && key !== playerId) {
                 let id = currentPlayer.id;
                 let tagX = currentPlayer.position.x;
@@ -175,6 +174,7 @@ window.onload = function() {
         let currentPlayer = players[playerId];
         if (currentPlayer) {
 
+            // Use refillCounter to control refill frequency
             refillCounter ++;
             if (refillCounter >= (refillFrequency * 1000 / milliseconds)) {
                 refill();
@@ -197,6 +197,7 @@ window.onload = function() {
             }
         }
 
+        // Cycle through existing projectiles
         for (let key in projectiles) {
             let currentProjectile = projectiles[key];
             if (currentProjectile) {
@@ -204,18 +205,6 @@ window.onload = function() {
 
                 moveBullet(currentProjectile, projectileRef, 5);
                 collideBullet(currentProjectile, projectileRef);
-
-                // if (Math.abs(currentProjectile.position.x) < 2.5 &&
-                //     Math.abs(currentProjectile.position.z) < 2.5) {
-                //     projectileRef.remove();
-                // }
-
-                // if (currentProjectile && projectileElements[currentProjectile.id]) {
-                //     projectileElements[currentProjectile.id].projectileModel.addEventListener("obbcollisionstarted", () => {
-                //         console.log("Hit");
-                //         projectileRef.remove();
-                //     })
-                // }
             }
         }
 
@@ -223,7 +212,10 @@ window.onload = function() {
     }
 
     function initGame() {
+        // Start loop
         loop();
+
+        // Create projectile
         new KeyHoldListener("Space", () => createBullet());
 
         const allPlayersRef = firebase.database().ref(`players`);

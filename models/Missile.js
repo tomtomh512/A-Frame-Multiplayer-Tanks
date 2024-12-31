@@ -7,15 +7,15 @@ class Missile {
         let ry = addedProjectile.rotation.y;
         let rz = addedProjectile.rotation.z;
 
-        this.projectileModel = document.createElement("a-sphere");
-        this.projectileModel.setAttribute("color", "#1C2F22");
-        this.projectileModel.setAttribute("radius", 0.05);
-        this.projectileModel.setAttribute("shader","flat");
-        this.projectileModel.setAttribute("obb-collider", "");
-        this.projectileModel.setAttribute("position", {x: x, y: y + 0.5, z: z});
+        this.projectileEntity = document.createElement("a-sphere");
+        this.projectileEntity.setAttribute("color", "#1C2F22");
+        this.projectileEntity.setAttribute("radius", 0.05);
+        this.projectileEntity.setAttribute("shader","flat");
+        this.projectileEntity.setAttribute("obb-collider", "");
+        this.projectileEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
     }
 
     updatePosition(x,y,z) {
-        this.projectileModel.setAttribute("position", {x: x, y: y + 0.5, z: z});
+        this.projectileEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
     }
 }

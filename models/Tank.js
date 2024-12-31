@@ -75,17 +75,17 @@ class Tank {
         this.mainBody.setAttribute("shader", "flat");
         this.bodyEntity.append(this.mainBody);
 
-        // this.collisionBox = document.createElement("a-box");
-        // this.collisionBox.setAttribute("opacity", 0);
-        // this.collisionBox.setAttribute("height", 2);
-        // this.collisionBox.setAttribute("width", 2.75);
-        // this.collisionBox.setAttribute("depth", 3.5);
-        // this.collisionBox.setAttribute("position", {x: 0, y: 0.5, z: 0.25});
-        // this.collisionBox.setAttribute("static-body", "");
-        // this.collisionBox.setAttribute("obb-collider", "");
-        // this.bodyEntity.append(this.collisionBox);
+        // When user lands on top of another
+        this.collision = document.createElement("a-sphere");
+        this.collision.setAttribute("opacity", 0);
+        this.collision.setAttribute("radius", 1);
+        this.collision.setAttribute("position", {x: 0, y: 0.5, z: 0.25});
+        this.collision.setAttribute("static-body", "");
+        // this.collision.setAttribute("obb-collider", "");
+        this.bodyEntity.append(this.collision);
 
-        let collisionHeight = 3;    // 2
+        // When user is pushing another
+        let collisionHeight = 2;    // 2
         let collisionWidth = 1.75;  // 2.75
         let collisionDepth = 2.25;  // 3.5
 
@@ -124,15 +124,6 @@ class Tank {
         this.frontCollision.setAttribute("position", {x: 0, y: 0.55, z: 0.25 - collisionDepth / 2 - 1});
         this.frontCollision.setAttribute("rotation", {x: 0, y: 0, z: 0});
         this.bodyEntity.append(this.frontCollision);
-
-        // this.topCollision = document.createElement("a-plane");
-        // this.topCollision.setAttribute("static-body", "");
-        // this.topCollision.setAttribute("opacity", 0);
-        // this.topCollision.setAttribute("width", collisionWidth);
-        // this.topCollision.setAttribute("height", collisionDepth);
-        // this.topCollision.setAttribute("position", {x: 0, y: collisionHeight + 0.25, z: 0.25});
-        // this.topCollision.setAttribute("rotation", {x: 90, y: 0, z: 0});
-        // this.bodyEntity.append(this.topCollision);
 
         this.front = document.createElement("a-box");
         this.front.setAttribute("color", "#545e4b");

@@ -14,6 +14,25 @@ window.onload = function() {
     let scene = document.querySelector("a-scene");
     const playerNameInput = document.querySelector("#player-name");
 
+    let d = 7;
+    let platform1 = new Platform(d, -d, 0);
+    let platform2 = new Platform(-d, -d, 0);
+    let platform3 = new Platform(d, d, 180);
+    let platform4 = new Platform(-d, d, 180);
+    scene.appendChild(platform1.platformEntity);
+    scene.appendChild(platform2.platformEntity);
+    scene.appendChild(platform3.platformEntity);
+    scene.appendChild(platform4.platformEntity);
+
+    let elevatedPlatform1 = new ElevatedPlatform(d, 3, 0, 0, 7);
+    let elevatedPlatform2 = new ElevatedPlatform(-d, 3, 0, 0, 7);
+    let elevatedPlatform3 = new ElevatedPlatform(0, 3, d, 90, 7);
+    let elevatedPlatform4 = new ElevatedPlatform(0, 3, -d, 90, 7);
+    scene.appendChild(elevatedPlatform1.platformEntity);
+    scene.appendChild(elevatedPlatform2.platformEntity);
+    scene.appendChild(elevatedPlatform3.platformEntity);
+    scene.appendChild(elevatedPlatform4.platformEntity);
+
     // set initial conditions of rig
     let rig = document.getElementById("camera");
     rig.setAttribute("position", { x: Math.random() * 10 - 5, y: 0, z: 0});
@@ -300,12 +319,12 @@ window.onload = function() {
             let model = new Missile(addedProjectile);
 
             projectileElements[addedProjectile.id] = model;
-            scene.appendChild(model.projectileModel);
+            scene.appendChild(model.projectileEntity);
         })
 
         allProjectilesRef.on("child_removed", (snapshot) => {
             const id = snapshot.val().id;
-            scene.removeChild(projectileElements[id].projectileModel);
+            scene.removeChild(projectileElements[id].projectileEntity);
             delete projectileElements[id];
         })
 

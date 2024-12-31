@@ -19,7 +19,7 @@
 </head>
 <body>
 
-<a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: false" physics="debug: true; friction: 0.01; gravity: -2.5; iterations: 1">
+<a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: false" physics="debug: false; friction: 0.01; gravity: -2.5; iterations: 1">
     <a-entity zid="cameraRig" position="0 0.5 0"> <!-- offset-->
         <a-camera id="camera" kinema-body="radius: 1" wasd-controls="acceleration: 15; fly: false" look-controls>
             <a-cursor raycaster="objects: [interact]" color="red" shader="flat"></a-cursor>
@@ -29,17 +29,11 @@
 
     <a-sky color="lightblue"></a-sky>
 
-    <a-plane static-body rotation="-270 0 0" width="30" height="60" shader="flat" opacity="0"></a-plane>
-    <a-box color="red" position="0 0 5"></a-box>
+    <a-plane static-body rotation="-270 0 0" width="25" height="45" shader="flat" opacity="0"></a-plane>
+    <a-plane id="ground" position="0 -0.35 0" rotation="-90 0 0" width="25" height="45" shader="flat" color="darkgrey"></a-plane>
 
-    <a-box color="blue" position="0 0 -5"></a-box>
-
-    <a-entity position="0 -0.35 0">
-<!--        <a-plane rotation="-90 0 0" width="40" height="40" shader="flat" src="images/grid.jpg" repeat="5 5" opacity="0.5" color="green"></a-plane>-->
-        <a-plane rotation="-90 0 0" width="30" height="60" shader="flat" color="darkgrey"></a-plane>
-
-    </a-entity>
-
+    <!--    <a-box color="red" position="0 0 5"></a-box>-->
+    <!--    <a-box color="blue" position="0 0 -5"></a-box>-->
 </a-scene>
 
 <div id="enter-name">

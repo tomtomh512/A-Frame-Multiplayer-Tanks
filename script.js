@@ -14,20 +14,21 @@ window.onload = function() {
     let scene = document.querySelector("a-scene");
     const playerNameInput = document.querySelector("#player-name");
 
-    let d = 7;
-    let platform1 = new Platform(d, -d, 0);
-    let platform2 = new Platform(-d, -d, 0);
-    let platform3 = new Platform(d, d, 180);
-    let platform4 = new Platform(-d, d, 180);
+    let d = 5;
+    let h = 2.5;
+    let platform1 = new Platform(d, -d, 0, h, "red", "black")
+    let platform2 = new Platform(-d, -d, 0, h, "red", "black");
+    let platform3 = new Platform(d, d, 180, h, "blue", "black");
+    let platform4 = new Platform(-d, d, 180, h, "blue", "black");
     scene.appendChild(platform1.platformEntity);
     scene.appendChild(platform2.platformEntity);
     scene.appendChild(platform3.platformEntity);
     scene.appendChild(platform4.platformEntity);
 
-    let elevatedPlatform1 = new ElevatedPlatform(d, 3, 0, 0, 7);
-    let elevatedPlatform2 = new ElevatedPlatform(-d, 3, 0, 0, 7);
-    let elevatedPlatform3 = new ElevatedPlatform(0, 3, d, 90, 7);
-    let elevatedPlatform4 = new ElevatedPlatform(0, 3, -d, 90, 7);
+    let elevatedPlatform1 = new ElevatedPlatform(d, 0, 0, h, d, "black");
+    let elevatedPlatform2 = new ElevatedPlatform(-d, 0, 0, h, d, "black");
+    let elevatedPlatform3 = new ElevatedPlatform(0, d, 90, h, d, "black");
+    let elevatedPlatform4 = new ElevatedPlatform(0, -d, 90, h, d, "black");
     scene.appendChild(elevatedPlatform1.platformEntity);
     scene.appendChild(elevatedPlatform2.platformEntity);
     scene.appendChild(elevatedPlatform3.platformEntity);
@@ -55,8 +56,8 @@ window.onload = function() {
             let rigRy = rig.getAttribute("rotation").y;
             let rigRz = rig.getAttribute("rotation").z;
 
-            let offset = 1.27155;
-            // let offset = 2;
+            // let offset = 1.27155;
+            let offset = 1.5;
 
             let yComponent = offset * sinInDegrees(rigRx);
             let groundLength = offset * cosInDegrees(rigRx);
@@ -118,10 +119,14 @@ window.onload = function() {
     function collideBullet(currentProjectile, projectileRef){
         if (currentProjectile) {
 
+            const ground = document.getElementById("ground");
+            const width = ground.getAttribute('width');
+            const depth = ground.getAttribute('height');
+
             // Hard boundaries
-            if (Math.abs(currentProjectile.position.x) > 10 ||
+            if (Math.abs(currentProjectile.position.x) > width / 2 ||
                 Math.abs(currentProjectile.position.y) > 10 ||
-                Math.abs(currentProjectile.position.z) > 10) {
+                Math.abs(currentProjectile.position.z) > depth / 2) {
                 projectileRef.remove();
             }
 

@@ -31,7 +31,7 @@ class Platform {
         this.ramp = document.createElement("a-box");
         this.ramp.setAttribute("color", rampColor);
         this.ramp.setAttribute("height", 9.65926);
-        this.ramp.setAttribute("width", 3);
+        this.ramp.setAttribute("width", 3.5);
         this.ramp.setAttribute("depth", 0.25);
         this.ramp.setAttribute("rotation", {x: 90 - rampAngle, y: 0, z: 0})
         this.ramp.setAttribute("position", {x: 0, y: height / 2 - 0.125 + yOffset, z: -depth / 2 - 4.65})
@@ -41,7 +41,7 @@ class Platform {
 
         this.rampCollision = document.createElement("a-plane");
         this.rampCollision.setAttribute("height", 11.01155)
-        this.rampCollision.setAttribute("width", 3);
+        this.rampCollision.setAttribute("width", 3.5);
         this.rampCollision.setAttribute("opacity", 0);
         this.rampCollision.setAttribute("rotation", {x: 90 - rampAngle, y: 0, z: 0})
         this.rampCollision.setAttribute("position", {x: 0, y: height / 2 - 0.15, z: -depth / 2 - 5.3})

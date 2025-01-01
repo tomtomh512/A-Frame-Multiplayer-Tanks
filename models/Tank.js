@@ -12,12 +12,6 @@ class Tank {
         this.characterEntity = document.createElement("a-entity");
         this.characterEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
 
-        // this.mainHB = document.createElement("a-sphere");
-        // this.mainHB.setAttribute("radius", 0.5);
-        // this.mainHB.setAttribute("opacity", 0.5);
-        // this.mainHB.setAttribute("position", {x: 0, y: -0.25, z: 0});
-        // this.characterEntity.append(this.mainHB);
-
         this.headEntity = document.createElement("a-entity");
         this.headEntity.setAttribute("id", "headEntity");
         this.headEntity.setAttribute("rotation", {x: rx, y: ry, z: rz});
@@ -276,12 +270,18 @@ class Tank {
 
         this.health = document.createElement("a-text");
         this.health.setAttribute("id", "health");
-        this.health.setAttribute("value", addedPlayer.health + "♡");
+        this.health.setAttribute("value", addedPlayer.health + "%");
         this.health.setAttribute("color", "white");
         this.health.setAttribute("position", {x: -0.3, y: 0, z: 0});
         this.infoTagEntity.append(this.health);
 
         this.characterEntity.append(this.infoTagEntity);
+
+        // this.mainHB = document.createElement("a-sphere");
+        // this.mainHB.setAttribute("radius", 0.7);
+        // this.mainHB.setAttribute("opacity", 0.5);
+        // this.mainHB.setAttribute("position", {x: 0, y: -0.25, z: 0});
+        // this.characterEntity.append(this.mainHB);
     }
 
     updateTagAngle(angle) {

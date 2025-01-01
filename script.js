@@ -14,21 +14,24 @@ window.onload = function() {
     let scene = document.querySelector("a-scene");
     const playerNameInput = document.querySelector("#player-name");
 
-    let d = 5;
-    let h = 2.5;
-    let platform1 = new Platform(d, -d, 0, h, "red", "black")
-    let platform2 = new Platform(-d, -d, 0, h, "red", "black");
-    let platform3 = new Platform(d, d, 180, h, "blue", "black");
-    let platform4 = new Platform(-d, d, 180, h, "blue", "black");
+    let d = 5; // distance from 0
+    let h = 2.5; // platform height
+    let color1 = "#233133"; // platform color
+    let color2 = "#1d1d1d"; // ramp and bridge color
+
+    let platform1 = new Platform(d, -d, 0, h, color1, color2)
+    let platform2 = new Platform(-d, -d, 0, h, color1, color2);
+    let platform3 = new Platform(d, d, 180, h, color1, color2);
+    let platform4 = new Platform(-d, d, 180, h, color1, color2);
     scene.appendChild(platform1.platformEntity);
     scene.appendChild(platform2.platformEntity);
     scene.appendChild(platform3.platformEntity);
     scene.appendChild(platform4.platformEntity);
 
-    let elevatedPlatform1 = new ElevatedPlatform(d, 0, 0, h, d, "black");
-    let elevatedPlatform2 = new ElevatedPlatform(-d, 0, 0, h, d, "black");
-    let elevatedPlatform3 = new ElevatedPlatform(0, d, 90, h, d, "black");
-    let elevatedPlatform4 = new ElevatedPlatform(0, -d, 90, h, d, "black");
+    let elevatedPlatform1 = new ElevatedPlatform(d, 0, 0, h, d, color2);
+    let elevatedPlatform2 = new ElevatedPlatform(-d, 0, 0, h, d, color2);
+    let elevatedPlatform3 = new ElevatedPlatform(0, d, 90, h, d, color2);
+    let elevatedPlatform4 = new ElevatedPlatform(0, -d, 90, h, d, color2);
     scene.appendChild(elevatedPlatform1.platformEntity);
     scene.appendChild(elevatedPlatform2.platformEntity);
     scene.appendChild(elevatedPlatform3.platformEntity);
@@ -120,13 +123,13 @@ window.onload = function() {
         if (currentProjectile) {
 
             const ground = document.getElementById("ground");
-            const width = ground.getAttribute('width');
-            const depth = ground.getAttribute('height');
+            const fieldWidth = ground.getAttribute('width');
+            const fieldDepth = ground.getAttribute('height');
 
             // Hard boundaries
-            if (Math.abs(currentProjectile.position.x) > width / 2 ||
-                Math.abs(currentProjectile.position.y) > 10 ||
-                Math.abs(currentProjectile.position.z) > depth / 2) {
+            if (Math.abs(currentProjectile.position.x) > fieldWidth / 2 ||
+                currentProjectile.position.y < -0.35 || currentProjectile.position.y > 7 ||
+                Math.abs(currentProjectile.position.z) > fieldDepth / 2) {
                 projectileRef.remove();
             }
 
@@ -141,9 +144,9 @@ window.onload = function() {
                         currentProjectile.position.y,
                         currentProjectile.position.z,
                         currentPlayer.position.x,
-                        currentPlayer.position.y - 0.25,
+                        currentPlayer.position.y,
                         currentPlayer.position.z,
-                    ) < 0.75) {
+                    ) < 0.7) {
                         projectileRef.remove();
                         currentPlayerRef.update({
                             health: currentPlayer.health - 5,
@@ -283,7 +286,7 @@ window.onload = function() {
 
         allPlayersRef.on("child_added", (snapshot) => {
             const addedPlayer = snapshot.val();
-            let model= new Tank(addedPlayer, "red");
+            let model= new Tank(addedPlayer, "cyana");
             playerElements[addedPlayer.id] = model;
             
             // Only render other users' models

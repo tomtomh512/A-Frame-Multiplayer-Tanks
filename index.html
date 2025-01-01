@@ -21,16 +21,21 @@
 
 <a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: false" physics="debug: false; friction: 0.01; gravity: -2.5; iterations: 1">
     <a-entity zid="cameraRig" position="0 0.5 0"> <!-- offset-->
-        <a-camera id="camera" kinema-body="radius: 1" wasd-controls="acceleration: 15; fly: false" look-controls>
+        <a-camera id="camera" kinema-body="radius: 0.8" wasd-controls="acceleration: 15; fly: false" look-controls>
             <a-cursor raycaster="objects: [interact]" color="red" shader="flat"></a-cursor>
 <!--            <a-plane width="1.5" depth="1" rotation="0 0 0" src="images/hud.png" material="alphaTest: 0.5" shader="flat" position="0 0 -0.75"></a-plane>-->
         </a-camera>
     </a-entity>
 
-    <a-sky color="lightblue"></a-sky>
+    <a-sky color="#656e6f"></a-sky>
 
-    <a-plane static-body rotation="-270 0 0" width="25" height="45" shader="flat" opacity="0"></a-plane>
-    <a-plane id="ground" position="0 -0.35 0" rotation="-90 0 0" width="25" height="45" shader="flat" color="darkgrey"></a-plane>
+    <a-plane static-body rotation="-270 0 0" width="20" height="40" shader="flat" opacity="0"></a-plane>
+    <a-plane id="ground" position="0 -0.35 0" rotation="-90 0 0" width="20" height="40" shader="flat" color="#4c5556"></a-plane>
+
+    <a-plane static-body height="3" width="20" rotation="0 0 0" position="0 1.15 -20" color="#303434" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="20" rotation="0 180 0" position="0 1.15 20" color="#303434" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="40" rotation="0 90 0" position="-10 1.15 0" color="#2a2a2a" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="40" rotation="0 270 0" position="10 1.15 0" color="#2a2a2a" shader="flat"></a-plane>
 
     <!--    <a-box color="red" position="0 0 5"></a-box>-->
     <!--    <a-box color="blue" position="0 0 -5"></a-box>-->

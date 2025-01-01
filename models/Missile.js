@@ -8,7 +8,7 @@ class Missile {
         let rz = addedProjectile.rotation.z;
 
         this.projectileEntity = document.createElement("a-sphere");
-        this.projectileEntity.setAttribute("color", "#1C2F22");
+        this.projectileEntity.setAttribute("color", "red");
         this.projectileEntity.setAttribute("radius", 0.05);
         this.projectileEntity.setAttribute("shader","flat");
         this.projectileEntity.setAttribute("obb-collider", "");

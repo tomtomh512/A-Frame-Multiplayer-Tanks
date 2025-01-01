@@ -11,16 +11,14 @@
     <script src="helpers/KeyHoldListener.js"></script>
     <script src="helpers/kinema.js"></script>
     <script src="helpers/helper.js"></script>
-    <script src="models/ElevatedPlatform.js"></script>
     <script src="models/Missile.js"></script>
-    <script src="models/Platform.js"></script>
     <script src="models/Tank.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
 
 <a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: false" physics="debug: false; friction: 0.01; gravity: -2.5; iterations: 1">
-    <a-entity zid="cameraRig" position="0 0.5 0"> <!-- offset-->
+    <a-entity zid="cameraRig" position="0 1 0"> <!-- offset-->
         <a-camera id="camera" kinema-body="radius: 0.8" wasd-controls="acceleration: 15; fly: false" look-controls>
             <a-cursor raycaster="objects: [interact]" color="red" shader="flat"></a-cursor>
 <!--            <a-plane width="1.5" depth="1" rotation="0 0 0" src="images/hud.png" material="alphaTest: 0.5" shader="flat" position="0 0 -0.75"></a-plane>-->
@@ -28,16 +26,50 @@
     </a-entity>
 
     <a-sky color="#656e6f"></a-sky>
+    <a-box static-body height="0.1" width="20" depth="40" position="0 -0.05 0" shader="flat" color="#4c5556"></a-box>
 
-    <a-plane static-body rotation="-270 0 0" width="20" height="40" shader="flat" opacity="0"></a-plane>
-    <a-plane id="ground" position="0 -0.35 0" rotation="-90 0 0" width="20" height="40" shader="flat" color="#4c5556"></a-plane>
+    <a-plane static-body height="3" width="20" rotation="0 0 0" position="0 1.5 -20" color="#303434" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="20" rotation="0 180 0" position="0 1.5 20" color="#303434" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="40" rotation="0 90 0" position="-10 1.5 0" color="#2a2a2a" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="40" rotation="0 270 0" position="10 1.5 0" color="#2a2a2a" shader="flat"></a-plane>
 
-    <a-plane static-body height="3" width="20" rotation="0 0 0" position="0 1.15 -20" color="#303434" shader="flat"></a-plane>
-    <a-plane static-body height="3" width="20" rotation="0 180 0" position="0 1.15 20" color="#303434" shader="flat"></a-plane>
-    <a-plane static-body height="3" width="40" rotation="0 90 0" position="-10 1.15 0" color="#2a2a2a" shader="flat"></a-plane>
-    <a-plane static-body height="3" width="40" rotation="0 270 0" position="10 1.15 0" color="#2a2a2a" shader="flat"></a-plane>
+    <a-entity position="5 0 -5" rotation="0 0 0">
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
 
-    <!--    <a-box color="red" position="0 0 5"></a-box>-->
+    <a-entity position="-5 0 -5" rotation="0 0 0">
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="5 0 5" rotation="0 180 0">
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="-5 0 5" rotation="0 180 0">
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="5 2.5 0" rotation="0 0 0">
+        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="-5 2.5 0" rotation="0 0 0">
+        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="0 2.5 5" rotation="0 90 0">
+        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="0 2.5 -5" rotation="0 90 0">
+        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+<!--        <a-box color="red" position="0 0 5"></a-box>-->
     <!--    <a-box color="blue" position="0 0 -5"></a-box>-->
 </a-scene>
 

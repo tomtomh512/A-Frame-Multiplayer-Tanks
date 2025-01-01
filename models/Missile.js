@@ -10,7 +10,7 @@ class Missile {
 
         this.projectileEntity = document.createElement("a-entity");
         this.projectileEntity.setAttribute("rotation", {x: rx, y: ry, z: rz});
-        this.projectileEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
+        this.projectileEntity.setAttribute("position", {x: x, y: y + 1, z: z});
 
 
         this.projectileTip = document.createElement("a-sphere");
@@ -32,6 +32,6 @@ class Missile {
     }
 
     updatePosition(x,y,z) {
-        this.projectileEntity.setAttribute("position", {x: x, y: y + 0.5, z: z});
+        this.projectileEntity.setAttribute("position", {x: x, y: y + 1, z: z});
     }
 }

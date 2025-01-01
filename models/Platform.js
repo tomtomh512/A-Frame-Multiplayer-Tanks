@@ -17,6 +17,7 @@ class Platform {
         this.box.setAttribute("position", {x: 0, y: height / 2 + yOffset, z: 0})
         this.box.setAttribute("shader", "flat");
         this.box.setAttribute("static-body", "");
+        this.box.setAttribute("obb-collider", "");
         this.platformEntity.append(this.box);
 
         this.boxCollision = document.createElement("a-plane");
@@ -37,6 +38,7 @@ class Platform {
         this.ramp.setAttribute("position", {x: 0, y: height / 2 - 0.125 + yOffset, z: -depth / 2 - 4.65})
         this.ramp.setAttribute("shader", "flat");
         this.ramp.setAttribute("static-body", "");
+        this.ramp.setAttribute("obb-collider", "");
         this.platformEntity.append(this.ramp);
 
         this.rampCollision = document.createElement("a-plane");

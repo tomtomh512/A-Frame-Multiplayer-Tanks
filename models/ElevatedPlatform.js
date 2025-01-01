@@ -13,6 +13,7 @@ class ElevatedPlatform {
         this.platform.setAttribute("depth", depth);
         this.platform.setAttribute("position", {x: 0, y: -0.125 + yOffset, z: 0});
         this.platform.setAttribute("shader", "flat");
+        this.platform.setAttribute("obb-collider", "");
         this.platformEntity.append(this.platform);
 
         this.boxCollision = document.createElement("a-plane");

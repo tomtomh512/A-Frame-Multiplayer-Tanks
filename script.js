@@ -60,7 +60,7 @@ window.onload = function() {
             let rigRz = rig.getAttribute("rotation").z;
 
             // let offset = 1.27155;
-            let offset = 1.5;
+            let offset = 1.75;
 
             let yComponent = offset * sinInDegrees(rigRx);
             let groundLength = offset * cosInDegrees(rigRx);
@@ -121,7 +121,6 @@ window.onload = function() {
 
     function collideBullet(currentProjectile, projectileRef){
         if (currentProjectile) {
-
             const ground = document.getElementById("ground");
             const fieldWidth = ground.getAttribute('width');
             const fieldDepth = ground.getAttribute('height');
@@ -130,6 +129,8 @@ window.onload = function() {
             if (Math.abs(currentProjectile.position.x) > fieldWidth / 2 ||
                 currentProjectile.position.y < -0.35 || currentProjectile.position.y > 7 ||
                 Math.abs(currentProjectile.position.z) > fieldDepth / 2) {
+
+                console.log("boundary hit");
                 projectileRef.remove();
             }
 
@@ -154,6 +155,14 @@ window.onload = function() {
                     }
                 }
             }
+
+            // Collision with environment
+            if (projectileElements[currentProjectile.id] && projectileElements[currentProjectile.id].projectileTip) { // Checks
+                projectileElements[currentProjectile.id].projectileTip.addEventListener("obbcollisionstarted", (event) => {
+                    projectileRef.remove();
+                });
+            }
+
         }
     }
 
@@ -286,7 +295,7 @@ window.onload = function() {
 
         allPlayersRef.on("child_added", (snapshot) => {
             const addedPlayer = snapshot.val();
-            let model= new Tank(addedPlayer, "cyana");
+            let model= new Tank(addedPlayer, "red");
             playerElements[addedPlayer.id] = model;
             
             // Only render other users' models

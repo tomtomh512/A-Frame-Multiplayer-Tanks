@@ -3,6 +3,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@192293bfd36d49d3cc82e611fd9b415b53b60435/dist/aframe-master.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,10 +19,11 @@
 <body>
 
 <a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: false" physics="debug: false; friction: 0.01; gravity: -2.5; iterations: 1">
+
     <a-entity zid="cameraRig" position="0 1 0"> <!-- offset-->
-        <a-camera id="camera" kinema-body="radius: 0.8" wasd-controls="acceleration: 15; fly: false" look-controls>
-            <a-cursor raycaster="objects: [interact]" color="red" shader="flat"></a-cursor>
-<!--            <a-plane width="1.5" depth="1" rotation="0 0 0" src="images/hud.png" material="alphaTest: 0.5" shader="flat" position="0 0 -0.75"></a-plane>-->
+        <a-camera id="camera" kinema-body="radius: 0.8" wasd-controls="acceleration: 13; fly: false" look-controls>
+<!--            <a-cursor raycaster="objects: [interact]" color="red" shader="flat"></a-cursor>-->
+            <a-plane width="1.5" depth="1" rotation="0 0 0" src="images/hud-2.png" material="alphaTest: 0.5" shader="flat" position="0 0 -0.75"></a-plane>
         </a-camera>
     </a-entity>
 
@@ -34,7 +36,9 @@
     <a-plane static-body height="3" width="40" rotation="0 270 0" position="10 1.5 0" color="#2a2a2a" shader="flat"></a-plane>
 
     <a-entity position="5 0 -5" rotation="0 0 0">
+<!--        Platform-->
         <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+<!--        Ramp-->
         <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
     </a-entity>
 
@@ -53,24 +57,12 @@
         <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
     </a-entity>
 
-    <a-entity position="5 2.5 0" rotation="0 0 0">
-        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
-    </a-entity>
+<!--    Bridges-->
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 0 0" position="5 2.375 0" shader="flat" obb-collider></a-box>
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 0 0" position="-5 2.375 0" shader="flat" obb-collider></a-box>
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 90 0" position="0 2.375 5" shader="flat" obb-collider></a-box>
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 90 0" position="0 2.375 -5" shader="flat" obb-collider></a-box>
 
-    <a-entity position="-5 2.5 0" rotation="0 0 0">
-        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
-    </a-entity>
-
-    <a-entity position="0 2.5 5" rotation="0 90 0">
-        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
-    </a-entity>
-
-    <a-entity position="0 2.5 -5" rotation="0 90 0">
-        <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" position="0 -0.125 0" shader="flat" obb-collider></a-box>
-    </a-entity>
-
-<!--        <a-box color="red" position="0 0 5"></a-box>-->
-    <!--    <a-box color="blue" position="0 0 -5"></a-box>-->
 </a-scene>
 
 <div id="enter-name">

@@ -14,6 +14,12 @@ class Tank {
         this.characterEntity = document.createElement("a-entity");
         this.characterEntity.setAttribute("position", {x: x, y: y + offset, z: z});
 
+        // this.hitbox = document.createElement("a-sphere");
+        // this.hitbox.setAttribute("radius", 0.9);
+        // this.hitbox.setAttribute("opacity", 0.5)
+        // this.hitbox.setAttribute("position", {x: 0, y: -0.5, z: 0});
+        // this.characterEntity.append(this.hitbox);
+
         this.headEntity = document.createElement("a-entity");
         this.headEntity.setAttribute("id", "headEntity");
         this.headEntity.setAttribute("rotation", {x: rx, y: ry, z: rz});
@@ -80,45 +86,45 @@ class Tank {
         this.bodyEntity.append(this.collision);
 
         // When user is pushing another
-        let collisionHeight = 1.75;    // 2
+        let collisionHeight = 0.5;    // 2
         let collisionWidth = 1.75;  // 2.75
         let collisionDepth = 2.25;  // 3.5
 
-        // this.backCollision = document.createElement("a-plane");
-        // this.backCollision.setAttribute("static-body", "");
-        // this.backCollision.setAttribute("opacity", 0);
-        // this.backCollision.setAttribute("width", collisionWidth);
-        // this.backCollision.setAttribute("height", collisionHeight);
-        // this.backCollision.setAttribute("position", {x: 0, y: 0.55, z: 0.25 + collisionDepth / 2 + 1});
-        // this.backCollision.setAttribute("rotation", {x: 0, y: 180, z: 0});
-        // this.bodyEntity.append(this.backCollision);
-        //
-        // this.leftCollision = document.createElement("a-plane");
-        // this.leftCollision.setAttribute("static-body", "");
-        // this.leftCollision.setAttribute("opacity", 0);
-        // this.leftCollision.setAttribute("width", collisionDepth);
-        // this.leftCollision.setAttribute("height", collisionHeight);
-        // this.leftCollision.setAttribute("position", {x: collisionWidth / 2 + 1, y: 0.55, z: 0.25});
-        // this.leftCollision.setAttribute("rotation", {x: 0, y: 270, z: 0});
-        // this.bodyEntity.append(this.leftCollision);
-        //
-        // this.rightCollision = document.createElement("a-plane");
-        // this.rightCollision.setAttribute("static-body", "");
-        // this.rightCollision.setAttribute("opacity", 0);
-        // this.rightCollision.setAttribute("width", collisionDepth);
-        // this.rightCollision.setAttribute("height", collisionHeight);
-        // this.rightCollision.setAttribute("position", {x: -1 * collisionWidth / 2 - 1, y: 0.55, z: 0.25});
-        // this.rightCollision.setAttribute("rotation", {x: 0, y: 90, z: 0});
-        // this.bodyEntity.append(this.rightCollision);
-        //
-        // this.frontCollision = document.createElement("a-plane");
-        // this.frontCollision.setAttribute("static-body", "");
-        // this.frontCollision.setAttribute("opacity", 0);
-        // this.frontCollision.setAttribute("width", collisionWidth);
-        // this.frontCollision.setAttribute("height", collisionHeight);
-        // this.frontCollision.setAttribute("position", {x: 0, y: 0.55, z: 0.25 - collisionDepth / 2 - 1});
-        // this.frontCollision.setAttribute("rotation", {x: 0, y: 0, z: 0});
-        // this.bodyEntity.append(this.frontCollision);
+        this.backCollision = document.createElement("a-plane");
+        this.backCollision.setAttribute("static-body", "");
+        this.backCollision.setAttribute("opacity", 0);
+        this.backCollision.setAttribute("width", collisionWidth);
+        this.backCollision.setAttribute("height", collisionHeight);
+        this.backCollision.setAttribute("position", {x: 0, y: 1.26642 * scale + 1, z: 0.25 + collisionDepth / 2 + 1});
+        this.backCollision.setAttribute("rotation", {x: 0, y: 180, z: 0});
+        this.bodyEntity.append(this.backCollision);
+
+        this.leftCollision = document.createElement("a-plane");
+        this.leftCollision.setAttribute("static-body", "");
+        this.leftCollision.setAttribute("opacity", 0);
+        this.leftCollision.setAttribute("width", collisionDepth);
+        this.leftCollision.setAttribute("height", collisionHeight);
+        this.leftCollision.setAttribute("position", {x: collisionWidth / 2 + 1, y: 1.26642 * scale + 1, z: 0.25});
+        this.leftCollision.setAttribute("rotation", {x: 0, y: 270, z: 0});
+        this.bodyEntity.append(this.leftCollision);
+
+        this.rightCollision = document.createElement("a-plane");
+        this.rightCollision.setAttribute("static-body", "");
+        this.rightCollision.setAttribute("opacity", 0);
+        this.rightCollision.setAttribute("width", collisionDepth);
+        this.rightCollision.setAttribute("height", collisionHeight);
+        this.rightCollision.setAttribute("position", {x: -collisionWidth / 2 - 1, y: 1.26642 * scale + 1, z: 0.25});
+        this.rightCollision.setAttribute("rotation", {x: 0, y: 90, z: 0});
+        this.bodyEntity.append(this.rightCollision);
+
+        this.frontCollision = document.createElement("a-plane");
+        this.frontCollision.setAttribute("static-body", "");
+        this.frontCollision.setAttribute("opacity", 0);
+        this.frontCollision.setAttribute("width", collisionWidth);
+        this.frontCollision.setAttribute("height", collisionHeight);
+        this.frontCollision.setAttribute("position", {x: 0, y: 1.26642 * scale + 1, z: 0.25 - collisionDepth / 2 - 1});
+        this.frontCollision.setAttribute("rotation", {x: 0, y: 0, z: 0});
+        this.bodyEntity.append(this.frontCollision);
 
         this.front = document.createElement("a-box");
         this.front.setAttribute("color", "#545e4b");
@@ -180,15 +186,6 @@ class Tank {
         this.antennaeTip.setAttribute("position", {x: 0.96886, y: 1.75, z: 1});
         this.antennaeTip.setAttribute("shader", "flat");
         this.bodyEntity.append(this.antennaeTip);
-
-        this.hitbox = document.createElement("a-box");
-        this.hitbox.setAttribute("height", 1.5);
-        this.hitbox.setAttribute("width", 2.5);
-        this.hitbox.setAttribute("depth", 3.5);
-        this.hitbox.setAttribute("opacity", 0);
-        this.hitbox.setAttribute("position", {x: 0, y: 0.5, z: 0});
-        this.hitbox.setAttribute("obb-collider", "");
-        this.bodyEntity.append(this.hitbox);
 
         this.characterEntity.append(this.bodyEntity);
 

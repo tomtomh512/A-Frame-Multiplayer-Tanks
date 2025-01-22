@@ -1,5 +1,19 @@
 let milliseconds = 30;
-let maxAmmo = 100;
+let maxAmmo = 10;
+
+let damage = new Howl({
+    src: ['sounds/damage.mp3'],
+    loop: false,
+    volume: 0.5,
+    preload: true
+});
+
+let shoot = new Howl({
+    src: ['sounds/shoot-2.mp3'],
+    loop: false,
+    volume: 0.5,
+    preload: true
+});
 
 window.onload = function() {
     let playerId;
@@ -13,29 +27,6 @@ window.onload = function() {
 
     let scene = document.querySelector("a-scene");
     const playerNameInput = document.querySelector("#player-name");
-
-    // let d = 5; // distance from 0
-    // let h = 2.5; // platform height
-    // let color1 = "#233133"; // platform color
-    // let color2 = "#1d1d1d"; // ramp and bridge color
-
-    // let platform1 = new Platform(d, -d, 0, h, color1, color2)
-    // let platform2 = new Platform(-d, -d, 0, h, color1, color2);
-    // let platform3 = new Platform(d, d, 180, h, color1, color2);
-    // let platform4 = new Platform(-d, d, 180, h, color1, color2);
-    // scene.appendChild(platform1.platformEntity);
-    // scene.appendChild(platform2.platformEntity);
-    // scene.appendChild(platform3.platformEntity);
-    // scene.appendChild(platform4.platformEntity);
-    //
-    // let elevatedPlatform1 = new ElevatedPlatform(d, 0, 0, h, d, color2);
-    // let elevatedPlatform2 = new ElevatedPlatform(-d, 0, 0, h, d, color2);
-    // let elevatedPlatform3 = new ElevatedPlatform(0, d, 90, h, d, color2);
-    // let elevatedPlatform4 = new ElevatedPlatform(0, -d, 90, h, d, color2);
-    // scene.appendChild(elevatedPlatform1.platformEntity);
-    // scene.appendChild(elevatedPlatform2.platformEntity);
-    // scene.appendChild(elevatedPlatform3.platformEntity);
-    // scene.appendChild(elevatedPlatform4.platformEntity);
 
     // set initial conditions of rig
     let rig = document.getElementById("camera");
@@ -96,6 +87,8 @@ window.onload = function() {
                 ammo: players[playerId].ammo - 1,
             })
 
+            shoot.play();
+
         }
     }
 
@@ -121,52 +114,12 @@ window.onload = function() {
 
     function collideBullet(currentProjectile, projectileRef){
         if (currentProjectile) {
-            // const ground = document.getElementById("ground");
-            // const fieldWidth = ground.getAttribute('width');
-            // const fieldDepth = ground.getAttribute('height');
-
             let fieldWidth = 20;
             let fieldDepth = 40;
 
             // Hard boundaries
-            if (Math.abs(currentProjectile.position.x) > fieldWidth / 2 ||
-                currentProjectile.position.y < -4 || currentProjectile.position.y > 7 ||
-                Math.abs(currentProjectile.position.z) > fieldDepth / 2) {
-
-                console.log("boundary hit");
+            if (Math.abs(currentProjectile.position.x) > fieldWidth / 2 || currentProjectile.position.y < -4 || currentProjectile.position.y > 7 || Math.abs(currentProjectile.position.z) > fieldDepth / 2) {
                 projectileRef.remove();
-            }
-
-            // Collision with players
-            for (let playerKey in players) {
-                let currentPlayer = players[playerKey];
-                if (currentPlayer){
-                    let currentPlayerRef = firebase.database().ref(`players/${currentPlayer.id}`);
-
-                    if (playerElements[currentPlayer.id] && playerElements[currentPlayer.id].bodyEntity && playerElements[currentPlayer.id].bodyEntity.hitbox) {
-                        playerElements[currentPlayer.id].bodyEntity.hitbox.addEventListener("obbcollisionstarted", (event) => {
-                            projectileRef.remove();
-                            currentPlayerRef.update({
-                                health: currentPlayer.health - 5,
-                            })
-                        })
-                    }
-
-
-                    // if (calculateDistance(
-                    //     currentProjectile.position.x,
-                    //     currentProjectile.position.y,
-                    //     currentProjectile.position.z,
-                    //     currentPlayer.position.x,
-                    //     currentPlayer.position.y,
-                    //     currentPlayer.position.z,
-                    // ) < 0.7) {
-                    //     projectileRef.remove();
-                    //     currentPlayerRef.update({
-                    //         health: currentPlayer.health - 5,
-                    //     })
-                    // }
-                }
             }
 
             // Collision with environment
@@ -176,6 +129,23 @@ window.onload = function() {
                 });
             }
 
+            // Collision with players
+            for (let playerKey in players) {
+                let currentPlayer = players[playerKey];
+                if (currentPlayer){
+                    let currentPlayerRef = firebase.database().ref(`players/${currentPlayer.id}`);
+
+                    if (calculateDistance(currentProjectile.position.x, currentProjectile.position.y, currentProjectile.position.z, currentPlayer.position.x, currentPlayer.position.y - 0.5, currentPlayer.position.z) < 0.7) {
+                        projectileRef.remove();
+                        currentPlayerRef.update({
+                            health: currentPlayer.health - 5,
+                        })
+
+                        // playerElements[currentPlayer.id].playDamageSound();
+                        damage.play();
+                    }
+                }
+            }
         }
     }
 

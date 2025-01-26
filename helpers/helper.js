@@ -12,9 +12,7 @@ function cosInDegrees(angleInDegrees) {
     return Math.cos(angleInRadians);
 }
 function atanInDegrees(y, x) {
-    // Convert from degrees to radians
     const angleInRadians = Math.atan(y / x);
-
     // Convert from radians to degrees
     const angleInDegrees = angleInRadians * 180 / Math.PI;
 

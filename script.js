@@ -1,6 +1,7 @@
 let milliseconds = 30;
 let maxAmmo = 10;
 
+// Sounds
 let damage = new Howl({
     src: ['sounds/damage.mp3'],
     loop: false,
@@ -31,13 +32,13 @@ window.onload = function() {
     // set initial conditions of rig
     let rig = document.getElementById("camera");
     rig.setAttribute("position", { x: Math.random() * 10 - 5, y: 0, z: 0});
-    rig.setAttribute("rotation", { x: 0, y: getCameraAngle(rig.getAttribute("position").x, rig.getAttribute("position").z), z: 0 });
+    // rig.setAttribute("rotation", { x: 0, y: getCameraAngle(rig.getAttribute("position").x, rig.getAttribute("position").z), z: 0 });
 
-    try {
-        rig.components["look-controls"].yawObject.rotation.y = rig.getAttribute("rotation").y * Math.PI / 180;
-    } catch (error) {
-        location.reload();
-    }
+    // try {
+    //     rig.components["look-controls"].yawObject.rotation.y = rig.getAttribute("rotation").y * Math.PI / 180;
+    // } catch (error) {
+    //     location.reload();
+    // }
 
     let count = 0;
     function createBullet() {
@@ -88,7 +89,6 @@ window.onload = function() {
             })
 
             shoot.play();
-
         }
     }
 

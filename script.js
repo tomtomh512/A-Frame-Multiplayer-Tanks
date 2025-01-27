@@ -31,14 +31,20 @@ window.onload = function() {
 
     // set initial conditions of rig
     let rig = document.getElementById("camera");
-    rig.setAttribute("position", { x: Math.random() * 10 - 5, y: 0, z: 0});
-    // rig.setAttribute("rotation", { x: 0, y: getCameraAngle(rig.getAttribute("position").x, rig.getAttribute("position").z), z: 0 });
 
-    // try {
-    //     rig.components["look-controls"].yawObject.rotation.y = rig.getAttribute("rotation").y * Math.PI / 180;
-    // } catch (error) {
-    //     location.reload();
-    // }
+    // x = -18.5, 0, or 18.5
+    // z = Any number between -8.5 and 8.5
+    let zSpawn = [-18.5, 0, 18.5];
+    let z = zSpawn[Math.floor(Math.random() * zSpawn.length)];
+    rig.setAttribute("position", { x: (Math.random() * 17) - 8.5, y: 0, z: z});
+
+    // Set camera rotation to face (0,0)
+    rig.setAttribute("rotation", { x: 0, y: getCameraAngle(rig.getAttribute("position").x, rig.getAttribute("position").z), z: 0 });
+    try {
+        rig.components["look-controls"].yawObject.rotation.y = rig.getAttribute("rotation").y * Math.PI / 180;
+    } catch (error) {
+        location.reload();
+    }
 
     let count = 0;
     function createBullet() {

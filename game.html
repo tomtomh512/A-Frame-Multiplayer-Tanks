@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@192293bfd36d49d3cc82e611fd9b415b53b60435/dist/aframe-master.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+    <meta charset="UTF-8">
+    <title> Tanks Shoot-out </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link href="styles/game.css" rel="stylesheet" type="text/css" />
+    <script src="helpers/KeyHoldListener.js"></script>
+    <script src="helpers/kinema.js"></script>
+    <script src="helpers/helper.js"></script>
+    <script src="models/Missile.js"></script>
+    <script src="models/Tank.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+
+<a-scene xr-mode-ui="enabled: false" obb-collider="showColliders: false" physics="debug: false; friction: 0.01; gravity: -2.5; iterations: 1">
+
+    <a-entity zid="cameraRig" position="0 1 0"> <!-- offset-->
+        <a-camera id="camera" kinema-body="radius: 0.8" wasd-controls="acceleration: 13; fly: false" look-controls>
+            <a-plane width="1.5" depth="1" rotation="0 0 0" src="images/hud-2.png" material="alphaTest: 0.5" shader="flat" position="0 0 -0.75"></a-plane>
+        </a-camera>
+    </a-entity>
+
+    <a-sky color="#656e6f"></a-sky>
+    <a-box static-body height="0.1" width="20" depth="40" position="0 -0.05 0" shader="flat" color="#4c5556"></a-box>
+
+    <a-plane static-body height="3" width="20" rotation="0 0 0" position="0 1.5 -20" color="#303434" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="20" rotation="0 180 0" position="0 1.5 20" color="#303434" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="40" rotation="0 90 0" position="-10 1.5 0" color="#2a2a2a" shader="flat"></a-plane>
+    <a-plane static-body height="3" width="40" rotation="0 270 0" position="10 1.5 0" color="#2a2a2a" shader="flat"></a-plane>
+
+    <a-entity position="5 0 -5" rotation="0 0 0">
+<!--        Platform-->
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+<!--        Ramp-->
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="-5 0 -5" rotation="0 0 0">
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="5 0 5" rotation="0 180 0">
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+    <a-entity position="-5 0 5" rotation="0 180 0">
+        <a-box static-body color="#233133" height="2.5" width="5" depth="5" position="0 1.25 0" shader="flat" obb-collider></a-box>
+        <a-box static-body color="#1d1d1d" height="9.65926" width="3.5" depth="0.25" rotation="75 0 0" position="0 1.125 -7.15" shader="flat" obb-collider></a-box>
+    </a-entity>
+
+<!--    Bridges-->
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 0 0" position="5 2.375 0" shader="flat" obb-collider></a-box>
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 0 0" position="-5 2.375 0" shader="flat" obb-collider></a-box>
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 90 0" position="0 2.375 5" shader="flat" obb-collider></a-box>
+    <a-box static-body color="#1d1d1d" height="0.25" width="3" depth="5" rotation="0 90 0" position="0 2.375 -5" shader="flat" obb-collider></a-box>
+
+</a-scene>
+
+<div id="enter-name">
+    <input id="player-name" maxlength="20" type="text" value = "" placeholder="Enter Name"/>
+</div>
+
+<section id="hud-container">
+    <!-- trailing damage effect, healthbar must render above healthbar-red -->
+    <section id="healthbar-container">
+        <div id="healthbar-base"></div>
+        <div id="healthbar-trailing"></div>
+        <div id="healthbar"></div>
+    </section>
+
+    <div id="information">
+        <div id="health-value"> </div>
+        <div id="ammo-value"> </div>
+        <section id="ammo-bar-container">
+            <div id="ammo-bar-base"></div>
+            <div id="ammo-bar-count"></div>
+        </section>
+    </div>
+</section>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script>
+    // NOTE - INCLUDE YOUR FIREBASE CONFIG HERE FOR ANYTHING TO WORK:
+    const firebaseConfig = {
+        apiKey: "AIzaSyAhasrsMOdcdVLYt7dRcTCUAr9zL5RnRZw",
+        authDomain: "a-frame-tanks.firebaseapp.com",
+        // databaseURL: "https://a-frame-tanks-default-rtdb.firebaseio.com",
+        projectId: "a-frame-tanks",
+        storageBucket: "a-frame-tanks.firebasestorage.app",
+        messagingSenderId: "735920408728",
+        appId: "1:735920408728:web:5bd530befed5b92c0828ed"
+    };
+    firebase.initializeApp(firebaseConfig);
+</script>
+
+</body>
+</html>

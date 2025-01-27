@@ -136,16 +136,6 @@ class Tank {
         this.front.setAttribute("shader", "flat");
         this.bodyEntity.append(this.front);
 
-        this.frontFiller = document.createElement("a-box");
-        this.frontFiller.setAttribute("color", "#545e4b");
-        this.frontFiller.setAttribute("height", 0.25);
-        this.frontFiller.setAttribute("width", 2.25);
-        this.frontFiller.setAttribute("depth", 1);
-        this.frontFiller.setAttribute("rotation", {x: 315, y: 0, z: 0});
-        this.frontFiller.setAttribute("position", {x: 0, y: 0.19558, z: -0.92321});
-        this.frontFiller.setAttribute("shader", "flat");
-        this.bodyEntity.append(this.frontFiller);
-
         this.back = document.createElement("a-box");
         this.back.setAttribute("color", "#545e4b");
         this.back.setAttribute("height", 0.25);

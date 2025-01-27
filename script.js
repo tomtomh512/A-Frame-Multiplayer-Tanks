@@ -1,4 +1,3 @@
-let milliseconds = 30;
 let maxAmmo = 10;
 
 // Sounds
@@ -77,7 +76,7 @@ window.onload = function() {
             }
 
             // Generate id = playerId + count
-            let uniqueId = playerId + count.toString();
+            let uniqueId = playerId + "===" + count.toString();
             const projectileRef = firebase.database().ref(`projectiles/${uniqueId}`);
             count++;
 
@@ -147,7 +146,6 @@ window.onload = function() {
                             health: currentPlayer.health - 5,
                         })
 
-                        // playerElements[currentPlayer.id].playDamageSound();
                         damage.play();
                     }
                 }
@@ -193,6 +191,7 @@ window.onload = function() {
         }
     }
 
+    let milliseconds = 30; // Loop
     let refillCounter = 0;
     let refillFrequency = 0.75;
     function loop() {
@@ -286,7 +285,7 @@ window.onload = function() {
             const addedPlayer = snapshot.val();
             let model= new Tank(addedPlayer, "red");
             playerElements[addedPlayer.id] = model;
-            
+
             // Only render other users' models
             if (addedPlayer.id != playerId) {
                 scene.appendChild(model.characterEntity);
@@ -306,7 +305,7 @@ window.onload = function() {
                 delete playerElements[id];
             } else {
                 delete playerElements[id];
-                window.location.href = "google.com";
+                window.location.href = "game-over.html";
             }
         });
 

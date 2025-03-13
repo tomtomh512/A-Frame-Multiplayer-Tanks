@@ -16,10 +16,10 @@ Play: https://multiplayer-tanks.netlify.app/
 
 <h2>Technologies Used</h2>
 <ul>
-  <li> Firebase Realtime Database to synchronize player and environment changes </li>
-  <li> A-Frame WebVR to construct 3D environment </li>
+  <li> Firebase Realtime Database: Synchronizes player and environment changes in real time </li>
+  <li> A-Frame WebVR: Used to construct the 3D game environment for an immersive experience </li>
 </ul>
 
 <h2> Instructions </h2>
 <li> Move - WASD or Arrow Keys </li>
-<li> Throw Sushi - SPACE </li>
+<li> Shoot - SPACE </li>

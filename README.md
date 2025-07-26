@@ -2,7 +2,7 @@
 
 An online multiplayer game
 
-<img src="images/thumbnail.png">
+<img src="images/thumbnail.png" alt="thumbnail">
 
 Play: https://multiplayer-tanks.netlify.app/
 - To see the multiplayer aspect in action, open the game in two different browsers or use an incognito tab
